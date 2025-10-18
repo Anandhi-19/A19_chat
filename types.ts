@@ -8,3 +8,13 @@ export interface ChatMessage {
   role: 'user' | 'model';
   content: string;
 }
+
+export interface ChatSession {
+  id: string;
+  persona: Persona;
+  character: string;
+  language: Language;
+  languageType: LanguageType;
+  chatHistory: ChatMessage[];
+  timestamp: number;
+}

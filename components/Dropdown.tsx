@@ -1,19 +1,14 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDownIcon } from './icons';
 
 interface DropdownProps<T extends string> {
+  label: string;
   options: readonly T[];
   selected: T | null;
   onSelect: (value: T) => void;
-  placeholder: string;
 }
 
-export const Dropdown = <T extends string>({
-  options,
-  selected,
-  onSelect,
-  placeholder,
-}: DropdownProps<T>) => {
+export const Dropdown = <T extends string>({ label, options, selected, onSelect }: DropdownProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +19,9 @@ export const Dropdown = <T extends string>({
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const handleSelect = (option: T) => {
@@ -33,24 +30,25 @@ export const Dropdown = <T extends string>({
   };
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
+      {label && <label className="block text-sm font-medium text-brand-light mb-2">{label}</label>}
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-black/20 text-left text-white p-3 rounded-lg flex justify-between items-center border border-white/20 focus:outline-none focus:ring-2 focus:ring-brand-accent"
+        className="w-full p-2 bg-black/30 border border-brand-accent/50 rounded-lg text-brand-light text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-brand-accent"
       >
-        <span className="truncate">{selected || placeholder}</span>
-        <ChevronDownIcon className={`w-5 h-5 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`} />
+        <span className="truncate pr-2">{selected || 'Please select...'}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 flex-shrink-0">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>
       </button>
       {isOpen && (
-        <ul className="absolute z-20 w-full mt-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <ul className="absolute z-10 mt-1 w-full bg-brand-secondary border border-brand-accent rounded-lg shadow-lg max-h-60 overflow-y-auto">
           {options.map((option) => (
             <li
               key={option}
-              onMouseDown={(e) => {
-                e.preventDefault(); // This is the fix: prevent default browser action on mousedown
-                handleSelect(option);
-              }}
-              className="px-4 py-2 text-white hover:bg-brand-accent cursor-pointer"
+              onClick={() => handleSelect(option)}
+              className="p-3 text-brand-light hover:bg-brand-accent cursor-pointer"
             >
               {option}
             </li>
