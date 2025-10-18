@@ -1,0 +1,5 @@
+{
+  "name": "A19 Chat AI",
+  "description": "A conversational AI chatbot that allows users to select a persona (like a friend, parent, or sibling) and define their character traits. The AI will then engage in a conversation while embodying the chosen role, providing a unique and personalized chat experience.",
+  "requestFramePermissions": []
+}
