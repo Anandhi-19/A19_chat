@@ -24,6 +24,7 @@ export const LANGUAGES: Language[] = [
   'Telugu',
   'Marathi',
   'Hindi'
+  'Kannada'
 ];
 
 export const LANGUAGE_TYPES = [
